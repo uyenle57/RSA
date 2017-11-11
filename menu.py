@@ -17,7 +17,7 @@ def isPrime(x):
         else: return True
 
 # Compute n
-def getN(p, q):
+def calculateN(p, q):
     return p * q
 
 # Phi(n)
@@ -25,7 +25,7 @@ def totient(p, q):
     return (p-1) * (q-1)
 
 # Generate key e coprime to phi(n)
-def getE(e):
+def calculateE(e):
     pass
 
 # Modular Exponential - used for encrpytion and decryption
@@ -65,16 +65,25 @@ def menu():
     print("Computer Security Coursework \nPart 1: RSA Algorithm \nby Uyen Le (tle004)")
     print("==========================================================================")
 
-    input_message = str(input("Enter the message you want to encrypt: "))
+    input_message = str(input("Enter the plaintext message you want to encrypt: "))
 
+    #Input message cannot be empty
     if not input_message:
         print("Please enter a message.")
         return
+
+    #TO DO: Validate input - only alphabetic characters are allowed
+    # elif:
+
     else:
-        print("\nStarting RSA encryption\n")
-        print('Generating two primes...')
-        rand_p = generateRandKey()
-        rand_q = generateRandKey()
-        print('p is: ', rand_p)
-        print('q is: ', rand_q)
+        print("\nStarting RSA encryption...\n")
+        key_p = generateRandKey()
+        key_q = generateRandKey()
+        print('p is:', key_p)
+        print('q is:', key_q)
+
+        print("\nn is:", str(key_p), "*", str(key_q), "=", calculateN(key_q, key_p))
+
+        print("\nphi(n) is: (", str(key_p), "-1) * (", str(key_q), "-1) =", totient(key_q, key_p))
+
 menu()
