@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-#
-import sys
-import random
 import secrets
 import re
 from array import *

@@ -1,19 +1,16 @@
-# RSA
-Implementation of RSA cryptography system in Python
+# RSA Crytopsystem
+Implementation of RSA cryptography system in Python.
 
-## Prerequisites:
+### Prerequisites:
 [Python >= 3.6](https://www.python.org/downloads/)
 
-
 ### Running the program:
-
 #### Windows
 Open Command prompt:  
 ```
 cd \path\to\tle004_coursework\rsa\
 python3 menu.py
 ```
-
 #### Mac
 Open Terminal:  
 ```
