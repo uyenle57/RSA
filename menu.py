@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-#
+import sys
+import random
 import secrets
+from array import *
 
 # Cryptorandom key generator
-# randomly generate a prime number between 0-1000
-def randNum(num):
-    for i in range(2,10):
-        if (i % 2 == 0):
-            return
-        else:
-            num = i
-    return num
+# randomly generate a prime number between 0 and 10000
+def generateRandKey():
+    while True:
+        num = secrets.randbelow(10000)
+        if(isPrime(num)): return num
 
-# Generate two 16bit primes p,q
-# def randPrime():
-
+def isPrime(x):
+    for i in range(2, x-1):
+        if x % i == 0: return False
+        else: return True
 
 # Compute n
 def getN(p, q):
@@ -24,11 +25,8 @@ def totient(p, q):
     return (p-1) * (q-1)
 
 # Generate key e coprime to phi(n)
-# def getE(e):
-#     #use randNum
-
-
-
+def getE(e):
+    pass
 
 # Modular Exponential - used for encrpytion and decryption
 # x is base
@@ -61,11 +59,22 @@ def encrypt(n, e):
 # def decrypt(d, n):
 # #use euclid()
 
-
 def menu():
+
     print("==========================================================================")
     print("Computer Security Coursework \nPart 1: RSA Algorithm \nby Uyen Le (tle004)")
     print("==========================================================================")
 
-    print(secrets.randbits(16))
+    input_message = str(input("Enter the message you want to encrypt: "))
+
+    if not input_message:
+        print("Please enter a message.")
+        return
+    else:
+        print("\nStarting RSA encryption\n")
+        print('Generating two primes...')
+        rand_p = generateRandKey()
+        rand_q = generateRandKey()
+        print('p is: ', rand_p)
+        print('q is: ', rand_q)
 menu()
