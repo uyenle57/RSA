@@ -2,6 +2,7 @@
 import secrets
 import re
 from array import *
+from math import gcd
 
 # Cryptorandom key generator
 # randomly generate a prime number between 0 and 10000
@@ -24,8 +25,23 @@ def totient(p, q):
     return (p-1) * (q-1)
 
 # Generate key e coprime to phi(n)
-def calculateE(e):
+# this means that the largest integer divisible by both e and phi(n) is 1
+def generateE(num, totient):
+    while totient != 0:
+        num, totient = totient, num % totient
+    return num
+    # for num in range(1, totient):
+    #     if(gcd(num,totient) == 1):
+    #         return num
+
+# Generate d, where ed = 1 mod phi(n)
+def generateD():
     pass
+
+
+# Extended Euclid's algorithm to find inverse of ModExp
+# ed = 1 % totient(n)
+#def euclid(a, b):
 
 # Modular Exponential - used for encrpytion and decryption
 # x is base
@@ -41,10 +57,6 @@ def modular_exp(x, n, m):
         x = x * x % m
     return y
 
-# Extended Euclidean function to find inverse of Modular Exponential
-# ed = 1 % totient(n)
-#def euclid(a, b):
-
 # Encryption
 # p is plaintext
 # e is exponen
@@ -54,19 +66,26 @@ def encrypt(n, e):
     c = modular_exp(p, e, n)
     return c
 
-# # Decryption
-# def decrypt(d, n):
-# #use euclid()
+# Decryption
+def decrypt(d, n):
+    # use euclid
+    pass
+
+
+
 
 def menu():
 
-    print("==========================================================================")
-    print("Computer Security Coursework \nPart 1: RSA Algorithm \nby Uyen Le (tle004)")
-    print("==========================================================================")
-
-    inputMessage = str(input("Enter the plaintext message you want to encrypt: "))
 
     regexStr = re.compile("^[a-zA-Z0-9_,.].*$")
+
+    print("==========================================================================")
+    print("Computer Security Coursework \nPart 1: RSA Algorithm \nby Uyen Le (tle004)")
+    print("==========================================================================\n")
+
+    print("Hello Alice! \n\nSuppose you want to send a private message to Bob...\n")
+    print("What would you like to say? \n(Note: you can only use alphanumeric characters in your message)\n")
+    inputMessage = str(input("Your plaintext message: "))
 
     #Input message cannot be empty
     if not inputMessage:
@@ -76,8 +95,7 @@ def menu():
     # Validate input using regular expression
     # only alphanumeric characters are allowed
     elif not(regexStr.match(inputMessage)):
-        print("\nERROR: Your message must be in plaintext (only alphanumeric characters allowed).")
-        print("Please try again.")
+        print("\nSorry, only alphanumeric characters allowed. Please try again.")
         return
 
     #If all above is passed, start the crytosystem
@@ -90,14 +108,21 @@ def menu():
 
         print("\nn is:", str(key_p), "*", str(key_q), "=", calculateN(key_q, key_p))
 
-        print("\nphi(n) is: (", str(key_p), "-1) * (", str(key_q), "-1) =", totient(key_q, key_p))
+        phiN = totient(key_q, key_p)
+        print("\nphi(n) is: (", str(key_p), "-1) * (", str(key_q), "-1) =", phiN)
 
         # TO DO
-        # print("\n e (coprime to phi(n)) is: ")
-        # print("\n d is: ")
-        # print ("\n\n Encryption key (e,n) is: (", ....)
-        # print ("\n\n Decryption key (d,n) is: (", ....)
+        for e in range(1, phiN):
+            result = generateE(e, phiN)
+        print("\ne (coprime to phi(n)) is: ", result)
 
-        # print("-------------------------------------------------")
-        # print("We now have the Communication diagram as follows:")
+        # print("\n d is: ")
+
+        # print ("\n\n Your public key (e,n) is: (", ....)
+        # print ("\n\n Your private key (d,n) is: (", ....)
+
+        # print("\n-------------------------------------------------")
+        # print("Your Public key can be published anywhere! However your Private Key is be confidential!")
+        # print("So that Charlie cannot intercept your private message!\n")
+        # print("Your Communication diagram now looks like this:")
 menu()
