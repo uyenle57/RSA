@@ -2,6 +2,7 @@
 import sys
 import random
 import secrets
+import re
 from array import *
 
 # Cryptorandom key generator
@@ -65,16 +66,23 @@ def menu():
     print("Computer Security Coursework \nPart 1: RSA Algorithm \nby Uyen Le (tle004)")
     print("==========================================================================")
 
-    input_message = str(input("Enter the plaintext message you want to encrypt: "))
+    inputMessage = str(input("Enter the plaintext message you want to encrypt: "))
+
+    regexStr = re.compile("^[a-zA-Z0-9_,.].*$")
 
     #Input message cannot be empty
-    if not input_message:
-        print("Please enter a message.")
+    if not inputMessage:
+        print("ERROR: Please enter a message.")
         return
 
-    #TO DO: Validate input - only alphabetic characters are allowed
-    # elif:
+    # Validate input using regular expression
+    # only alphanumeric characters are allowed
+    elif not(regexStr.match(inputMessage)):
+        print("\nERROR: Your message must be in plaintext (only alphanumeric characters allowed).")
+        print("Please try again.")
+        return
 
+    #If all above is passed, start the crytosystem
     else:
         print("\nStarting RSA encryption...\n")
         key_p = generateRandKey()
@@ -86,4 +94,12 @@ def menu():
 
         print("\nphi(n) is: (", str(key_p), "-1) * (", str(key_q), "-1) =", totient(key_q, key_p))
 
+        # TO DO
+        # print("\n e (coprime to phi(n)) is: ")
+        # print("\n d is: ")
+        # print ("\n\n Encryption key (e,n) is: (", ....)
+        # print ("\n\n Decryption key (d,n) is: (", ....)
+
+        # print("-------------------------------------------------")
+        # print("We now have the Communication diagram as follows:")
 menu()
