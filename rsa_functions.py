@@ -3,9 +3,9 @@
 import random
 import secrets
 from array import *
+import math
 from math import gcd
 from itertools import combinations
-
 
 
 # Cryptorandom key generator
@@ -43,27 +43,50 @@ def isCoPrime(list):
             return True
     return False
 
-# Generate d, where ed = 1 mod phi(n)
-def generateD():
-    pass
+# Generate d, using Extended Euclid's algorithm
+# which is calculating the inverse of ModExp
+# ed = 1 mod totient(n)
+def modInverse(a,b):
+    store = a
+    sign = 1
+    r = 1
+    s = 0
+    while b != 0:
+        q = a/b
+        temp = r
+        r = temp * q + r
+        s = temp
+        temp = b
+        b = a - q * temp
+        a = temp
+        sign = -sign
+    answer = (r - (sign * s)) % store
+    return answer
 
-
-# Extended Euclid's algorithm to find inverse of ModExp
-# ed = 1 % totient(n)
-#def extendedEuclid(a, b):
+def egcd(a, b):
+    if a == 0:
+        return (b, 0, 1)
+    else:
+        g, y, x = egcd(b % a, a)
+        return (g, x - (b // a) * y, y)
 
 # Modular Exponential - used for encrpytion and decryption
 # x is base
-# n is exponen
+# n is exponent
 # m is modulus
 def modular_exp(x, n, m):
     y = 1
+    x = x * x % m
 
-    while (n > 0):
+    while (n != 0):
+
         if (n % 2 == 1): #if remainder is 1 then n is an odd
             y = y * x % m
+        else:
+            x = x * x % m
+
         n = n/2
-        x = x * x % m
+
     return y
 
 # Encryption
@@ -71,11 +94,11 @@ def modular_exp(x, n, m):
 # e is exponen
 # n is modulus
 # c is ciphertext
-def encrypt(n, e):
+def encrypt(p, e, n):
     c = modular_exp(p, e, n)
     return c
 
 # Decryption
-def decrypt(d, n):
-    # use euclid
-    pass
+def decrypt(c, d, n):
+    p = modular_exp(c, d, n)
+    return p
