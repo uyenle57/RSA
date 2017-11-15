@@ -58,7 +58,7 @@ def menu():
             if(isCoPrime([i, phiN])):
                 coPrimeList.append(i)
 
-        key_e = 7
+        key_e = coPrimeList[random.randint(coPrimeList[0], len(coPrimeList)-1)]
         print("\ne is: ", key_e)
 
         # Verify d is coprime to phiN
@@ -87,9 +87,9 @@ def menu():
         print ("\nYour public key (e,n) is: ", (key_e,key_n))
         print ("Your private key (d,n) is: ", (key_d,key_n))
 
-        ciphertext = [ pow(letter_to_int(c), key_e, key_n) for c in inputMessage ]
-        print("Ciphertext: ", ciphertext)
-        print("plaintext: ", [pow(c, key_d, key_n) for c in ciphertext ])
+        # ciphertext = [ pow(letter_to_int(c), key_e, key_n) for c in inputMessage ]
+        # print("Ciphertext: ", ciphertext)
+        # print("plaintext: ", [pow(c, key_d, key_n) for c in ciphertext ])
 
         # print("\n-------------------------------------------------")
         # print("Your Public key can be published anywhere, however your Private Key must be confidential.")
