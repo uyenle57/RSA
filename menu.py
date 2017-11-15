@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-#
 
 import os, sys, re
+from collections import Counter
 from rsa_functions import *
+
 
 def letter_to_int(letter):
     alphabet = list('abcdefghijklmnopqrstuvwxyz')
@@ -97,30 +99,23 @@ def menu():
         ciphertext = [ pow(ord(c), alice_e, alice_n) for c in inputMessage ]
         print("Your ciphertext is: ", ciphertext)
 
-        send = str(input("\nPress S to send your ciphertext and public key to Bob..."))
+        send = str(input("\nPress S then Enter to send your ciphertext and public key to Bob..."))
         if not send == 's':
             print("\nYou must send your ciphertext to Bob to continue.\n")
             sys.exit(1)
         else:
-            print("\nCiphertext and public key successfully sent!")
+            print("\n################ RSA Decryption ###############")
+            print("Bob starts decrypting your ciphertext...")
+            # plaintext = [ chr(pow(c, alice_d, alice_n)) for c in ciphertext ]
+            plaintext = [ chr(pow(c, alice_d, alice_n)) for c in ciphertext ]
+            print("\nBob's decrypted message is: ", plaintext)
 
-        print("\n################ RSA Decryption ###############")
-
-        # TO DO: generate Bob's private key!
-        # bob_p = generateRandKey()
-        # bob_q = generateRandKey()
-        # print('Bob\'s key p is:', bob_p)
-        # print('Bob\'s key q is:', bob_q)
-        #
-        # bob_n = calculateN(bob_p, bob_q);
-        # print('Bob\'s key n is:', bob_n)
-        #
-        # bob_e =
-
-        print("\nBob starts decrypting your ciphertext using your public key and his private key.")
-        plaintext = [ chr(pow(c, alice_d, alice_n)) for c in ciphertext ]
-        print("Bob's decrypted message is: ", plaintext)
-
-        # print("\n\n################ Communication Diagram Flow ##############")
+            #Verify decrypted message matches original plaintext
+            if (Counter(inputMessage) == Counter(plaintext)):
+                print("\nVerified message matches Alice's input message. RSA cryptosystem completed.")
+                pass
+            else:
+                print("Not matched!")
+                sys.exit(1)
 
 menu()
