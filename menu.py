@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-#
 
-import os, sys
-import re
+import os, sys, re
 from rsa_functions import *
 
 def letter_to_int(letter):
@@ -13,8 +12,7 @@ def menu():
     # Call the rsa_functions.py script
     os.system('python3 rsa_functions.py')
 
-    regexStr = re.compile("^[a-zA-Z,.].*$")
-
+    # regexStr = re.compile("^[a-zA-Z,.].*$")
 
     print("==========================================================================")
     print("Computer Security Coursework \nPart 1: RSA Algorithm \nby Uyen Le (tle004)")
@@ -30,26 +28,26 @@ def menu():
         sys.exit(1)
     # Validate input using regular expression
     # only alphanumeric characters are allowed
-    elif not(regexStr.match(inputMessage)):
-        print("\nSorry, only alphabetic characters allowed. Please try again.")
-        return
+    # elif not(regexStr.match(inputMessage)):
+    #     print("\nSorry, only alphabetic characters allowed. Please try again.")
+    #     sys.exit(1)
     #If all above is passed, start the crytosystem
     else:
         print("\nStarting RSA cryptosystem...\n")
 
         # Generate keys p and q
-        key_p = generateRandKey()
-        key_q = generateRandKey()
-        print('p is:', key_p)
-        print('q is:', key_q)
+        alice_p = generateRandKey()
+        alice_q = generateRandKey()
+        print('p is:', alice_p)
+        print('q is:', alice_q)
 
         # Caluculate key n
-        key_n = calculateN(key_q, key_p)
-        print("\nn is:", str(key_p), "*", str(key_q), "=", key_n)
+        alice_n = calculateN(alice_p, alice_q)
+        print("\nn is:", str(alice_p), "*", str(alice_q), "=", alice_n)
 
         # Calculate phi(n)
-        phiN = totient(key_q, key_p)
-        print("\nphi(n) is: (", str(key_p), "-1) * (", str(key_q), "-1) =", phiN)
+        phiN = totient(alice_p, alice_q)
+        print("\nphi(n) is: (", str(alice_p), "-1) * (", str(alice_q), "-1) =", phiN)
 
         # Generate key e
         coPrimeList = []
@@ -58,61 +56,71 @@ def menu():
             if(isCoPrime([i, phiN])):
                 coPrimeList.append(i)
 
-        key_e = coPrimeList[random.randint(coPrimeList[0], len(coPrimeList)-1)]
-        print("\ne is: ", key_e)
+        alice_e = coPrimeList[random.randint(coPrimeList[0], len(coPrimeList)-1)]
+        print("\ne is: ", alice_e)
 
         # Verify d is coprime to phiN
-        if(gcd(key_e,phiN) == 1):
+        if(gcd(alice_e,phiN) == 1):
             print("Verified e is coprime!")
         else:
             print("E is not coprime.")
             sys.exit(1)
 
         # Generate key d
-        _, key_d, _ = egcd(key_e, phiN)
+        _, alice_d, _ = egcd(alice_e, phiN)
 
         # ensure key d is positive
-        if key_d < 0:
-            key_d = key_d % phiN
+        if alice_d < 0:
+            alice_d = alice_d % phiN
 
-        print("d is: ", key_d)
+        print("d is: ", alice_d)
 
         # verify d is coprime to phiN
-        if(gcd(key_d,phiN) == 1):
+        if(gcd(alice_d,phiN) == 1):
             print("Verified d is coprime!")
         else:
             print("D is not coprime.")
             sys.exit(1)
 
-        print ("\nYour public key (e,n) is: ", (key_e,key_n))
-        print ("Your private key (d,n) is: ", (key_d,key_n))
-
-
-        print(modular_exp(2,1,2))
-        print(modular_exp(2,2,3))
-        print(modular_exp(2,3,4))
-        print(modular_exp(2,4,5))
-        print(modular_exp(2,5,6))
-        print(modular_exp(2,6,7))
-        print(modular_exp(11,13,19))
-
-        print(pow(2,1,2))
-        print(pow(2,2,3))
-        print(pow(2,3,4))
-        print(pow(2,4,5))
-        print(pow(2,5,6))
-        print(pow(2,6,7))
-        print(pow(11,13,19))
+        # Alice's public and private keys
+        alice_pubKey = alice_e, alice_n
+        print ("\nYour public key (e,n) is: ", alice_pubKey)
+        alice_privKey = alice_d, alice_n
+        print ("Your private key (d,n) is: ", alice_privKey)
 
         # Encryption
-        print("\n-------------------------------------------------")
-        print("Using your public key, we can now start encprypting your input message:")
+        print("\n################ RSA Encryption ###############")
 
+        # TO DO: fix modular_exp!
+        # print([ encrypt(ord(c), alice_e, alice_n) for c in inputMessage ])
 
+        ciphertext = [ pow(ord(c), alice_e, alice_n) for c in inputMessage ]
+        print("Your ciphertext is: ", ciphertext)
 
-        # ciphertext = [ pow(letter_to_int(c), key_e, key_n) for c in inputMessage ]
-        # print("Ciphertext: ", ciphertext)
-        # print("plaintext: ", [pow(c, key_d, key_n) for c in ciphertext ])
+        send = str(input("\nPress S to send your ciphertext and public key to Bob..."))
+        if not send == 's':
+            print("\nYou must send your ciphertext to Bob to continue.\n")
+            sys.exit(1)
+        else:
+            print("\nCiphertext and public key successfully sent!")
 
-        # print("Your Communication diagram now looks like this:")
+        print("\n################ RSA Decryption ###############")
+
+        # TO DO: generate Bob's private key!
+        # bob_p = generateRandKey()
+        # bob_q = generateRandKey()
+        # print('Bob\'s key p is:', bob_p)
+        # print('Bob\'s key q is:', bob_q)
+        #
+        # bob_n = calculateN(bob_p, bob_q);
+        # print('Bob\'s key n is:', bob_n)
+        #
+        # bob_e =
+
+        print("\nBob starts decrypting your ciphertext using your public key and his private key.")
+        plaintext = [ chr(pow(c, alice_d, alice_n)) for c in ciphertext ]
+        print("Bob's decrypted message is: ", plaintext)
+
+        # print("\n\n################ Communication Diagram Flow ##############")
+
 menu()

@@ -3,7 +3,6 @@
 import random
 import secrets
 from array import *
-import math
 from math import gcd
 from itertools import combinations
 
