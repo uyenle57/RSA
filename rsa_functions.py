@@ -76,14 +76,11 @@ def egcd(a, b):
 # m is modulus
 def modular_exp(x, n, m):
     y = 1
-    x = x * x % m
-
-    while (n != 0):
+    while (n > 0):
         if (n % 2 == 1): #if remainder is 1 then n is an odd
             y = y * x % m
-        else:
-            x = x * x % m
         n = n/2
+        x = x * x % m
     return y
 
 # Encryption

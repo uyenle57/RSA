@@ -35,7 +35,7 @@ def menu():
         return
     #If all above is passed, start the crytosystem
     else:
-        print("\nStarting RSA encryption...\n")
+        print("\nStarting RSA cryptosystem...\n")
 
         # Generate keys p and q
         key_p = generateRandKey()
@@ -87,12 +87,32 @@ def menu():
         print ("\nYour public key (e,n) is: ", (key_e,key_n))
         print ("Your private key (d,n) is: ", (key_d,key_n))
 
+
+        print(modular_exp(2,1,2))
+        print(modular_exp(2,2,3))
+        print(modular_exp(2,3,4))
+        print(modular_exp(2,4,5))
+        print(modular_exp(2,5,6))
+        print(modular_exp(2,6,7))
+        print(modular_exp(11,13,19))
+
+        print(pow(2,1,2))
+        print(pow(2,2,3))
+        print(pow(2,3,4))
+        print(pow(2,4,5))
+        print(pow(2,5,6))
+        print(pow(2,6,7))
+        print(pow(11,13,19))
+
+        # Encryption
+        print("\n-------------------------------------------------")
+        print("Using your public key, we can now start encprypting your input message:")
+
+
+
         # ciphertext = [ pow(letter_to_int(c), key_e, key_n) for c in inputMessage ]
         # print("Ciphertext: ", ciphertext)
         # print("plaintext: ", [pow(c, key_d, key_n) for c in ciphertext ])
 
-        # print("\n-------------------------------------------------")
-        # print("Your Public key can be published anywhere, however your Private Key must be confidential.")
-        # print("So that Charlie cannot intercept your message.\n")
         # print("Your Communication diagram now looks like this:")
 menu()
