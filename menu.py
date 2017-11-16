@@ -11,10 +11,7 @@ def letter_to_int(letter):
 
 def menu():
 
-    # Call the rsa_functions.py script
-    os.system('python3 rsa_functions.py')
-
-    # regexStr = re.compile("^[a-zA-Z,.].*$")
+    regexStr = re.compile("^[a-zA-Z0-9,.].*$")
 
     print("==========================================================================")
     print("Computer Security Coursework \nPart 1: RSA Algorithm \nby Uyen Le (tle004)")
@@ -24,16 +21,14 @@ def menu():
     print("What would you like to say? \n(Note: you can only use alphanumeric characters in your message)\n")
     inputMessage = str(input("Your plaintext message: "))
 
-    #Input message cannot be empty
     if not inputMessage:
         print("ERROR: Please enter a message.")
         sys.exit(1)
     # Validate input using regular expression
     # only alphanumeric characters are allowed
-    # elif not(regexStr.match(inputMessage)):
-    #     print("\nSorry, only alphabetic characters allowed. Please try again.")
-    #     sys.exit(1)
-    #If all above is passed, start the crytosystem
+    elif not(regexStr.match(inputMessage)):
+        print("\nSorry, only alphanumeric characters allowed. Please try again.")
+        sys.exit(1)
     else:
         print("\n################ RSA Encryption - ALICE ###############")
 
