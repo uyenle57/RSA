@@ -35,7 +35,7 @@ def menu():
     #     sys.exit(1)
     #If all above is passed, start the crytosystem
     else:
-        print("\nStarting RSA cryptosystem...\n")
+        print("\n################ RSA Encryption - ALICE ###############")
 
         # Generate keys p and q
         alice_p = generateRandKey()
@@ -86,36 +86,29 @@ def menu():
 
         # Alice's public and private keys
         alice_pubKey = alice_e, alice_n
-        print ("\nYour public key (e,n) is: ", alice_pubKey)
+        print ("\nAlice public key (e,n) is: ", alice_pubKey)
         alice_privKey = alice_d, alice_n
-        print ("Your private key (d,n) is: ", alice_privKey)
-
-        # Encryption
-        print("\n################ RSA Encryption ###############")
-
-        # TO DO: fix modular_exp!
-        # print([ encrypt(ord(c), alice_e, alice_n) for c in inputMessage ])
+        print ("Alice private key (d,n) is: ", alice_privKey)
 
         ciphertext = [ pow(ord(c), alice_e, alice_n) for c in inputMessage ]
-        print("Your ciphertext is: ", ciphertext)
+        print("\nEncryption completed. Your ciphertext is: ", ciphertext)
 
         send = str(input("\nPress S then Enter to send your ciphertext and public key to Bob..."))
         if not send == 's':
             print("\nYou must send your ciphertext to Bob to continue.\n")
             sys.exit(1)
         else:
-            print("\n################ RSA Decryption ###############")
-            print("Bob starts decrypting your ciphertext...")
-            # plaintext = [ chr(pow(c, alice_d, alice_n)) for c in ciphertext ]
+            print("\n################ RSA Decryption - BOB ###############")
+
             plaintext = [ chr(pow(c, alice_d, alice_n)) for c in ciphertext ]
             print("\nBob's decrypted message is: ", plaintext)
 
             #Verify decrypted message matches original plaintext
             if (Counter(inputMessage) == Counter(plaintext)):
-                print("\nVerified message matches Alice's input message. RSA cryptosystem completed.")
+                print("\nVerified decrypted message is correct. RSA completed.")
                 pass
             else:
-                print("Not matched!")
+                print("\nERROR: Decrypted message is not correct. Please try again.")
                 sys.exit(1)
 
 menu()

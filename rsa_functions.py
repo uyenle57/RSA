@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-#
 
-import random
-import secrets
+import sys, re
+import random, secrets
 from array import *
 from math import gcd
+from collections import Counter
 from itertools import combinations
 
 
