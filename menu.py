@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-#
 
-import os, sys, re
-from collections import Counter
 from rsa_functions import *
 
 
@@ -10,6 +8,28 @@ def letter_to_int(letter):
     return alphabet.index(letter) + 1
 
 def menu():
+
+    # print(pow(3,5,7))
+    # print(pow(4,2,12))
+    # print(pow(9,3,50))
+    # print(pow(5,2,19))
+    # print(pow(33,2,125))
+    # print(pow(5,9,11))
+    # print(pow(4,4,22))
+    # print(pow(9,8,7))
+    # print(pow(2,4,20))
+    #
+    # print("-----")
+    # print(modular_exp(3,5,7))
+    # print(modular_exp(4,2,12))
+    # print(modular_exp(9,3,50))
+    # print(modular_exp(5,2,19))
+    # print(modular_exp(33,2,125))
+    # print(modular_exp(5,9,11))
+    # print(modular_exp(4,4,22))
+    # print(modular_exp(9,8,7))
+    # print(modular_exp(2,4,20))
+
 
     regexStr = re.compile("^[a-zA-Z0-9,.].*$")
 
@@ -93,7 +113,7 @@ def menu():
             print("\nYou must send your ciphertext to Bob to continue.\n")
             sys.exit(1)
         else:
-            print("\n################ RSA Decryption - BOB ###############")
+            print("\n################ RSA Decryption - BOB #################")
 
             plaintext = [ chr(pow(c, alice_d, alice_n)) for c in ciphertext ]
             print("\nBob's decrypted message is: ", plaintext)
@@ -105,5 +125,14 @@ def menu():
             else:
                 print("\nERROR: Decrypted message is not correct. Please try again.")
                 sys.exit(1)
+
+
+    # Convert to binary
+    # bin_inputMessage = bin(int.from_bytes(str(inputMessage).encode(), 'big'))
+    # bin_ciphertext = bin(int.from_bytes(str(ciphertext).encode(), 'big'))
+    # bin_plaintext = bin(int.from_bytes(str(plaintext).encode(), 'big'))
+
+    # print("\n\n################ RSA Interception - CHARLIE ###############")
+    # print("\nOh no, Charlie has interceted your communication flow with Bob!")
 
 menu()

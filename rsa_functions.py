@@ -2,6 +2,7 @@
 
 import sys, re
 import random, secrets
+from binascii import *
 from array import *
 from math import gcd
 from collections import Counter
@@ -77,7 +78,7 @@ def egcd(a, b):
 def modular_exp(x, n, m):
     y = 1
     while (n > 0):
-        if (n % 2 == 1): #if remainder is 1 then n is an odd
+        if (n % 2 == 1): #if odd
             y = y * x % m
         n = n/2
         x = x * x % m
@@ -85,14 +86,16 @@ def modular_exp(x, n, m):
 
 # Encryption
 # p is plaintext
-# e is exponen
-# n is modulus
+# e is public key
 # c is ciphertext
 def encrypt(p, e, n):
     c = modular_exp(p, e, n)
     return c
 
 # Decryption
+# c is ciphertext
+# d is private key
+# p is plaintext
 def decrypt(c, d, n):
     p = modular_exp(c, d, n)
     return p
