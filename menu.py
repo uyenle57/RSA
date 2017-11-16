@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-#
 
+import textwrap
 from rsa_functions import *
 
 
@@ -33,13 +34,17 @@ def menu():
 
     regexStr = re.compile("^[a-zA-Z0-9,.].*$")
 
-    print("==========================================================================")
-    print("Computer Security Coursework \nPart 1: RSA Algorithm \nby Uyen Le (tle004)")
-    print("==========================================================================\n")
+    print (textwrap.dedent("""
+        ==========================================================================
+        Computer Security Coursework
+        Part 1: RSA Algorithm
+        by Uyen Le (tle004)
+        ==========================================================================
+    """))
 
-    print("Hello Alice! \n\nSuppose you want to send a private message to Bob...\n")
-    print("What would you like to say? \n(Note: you can only use alphanumeric characters in your message)\n")
-    inputMessage = str(input("Your plaintext message: "))
+    print("Hello Alice! \nSuppose you want to send a private message to Bob. What would you like to say?")
+    print("\n(Only alphanumeric characters are allowed)\n")
+    inputMessage = str(input("Your message: "))
 
     if not inputMessage:
         print("ERROR: Please enter a message.")
@@ -50,9 +55,12 @@ def menu():
         print("\nSorry, only alphanumeric characters allowed. Please try again.")
         sys.exit(1)
     else:
+
+        # START RSA ENCRYPTION
+
         print("\n################ RSA Encryption - ALICE ###############")
 
-        # Generate keys p and q
+        # Randomly generate keys p and q between 0 and 100
         alice_p = generateRandKey()
         alice_q = generateRandKey()
         print('p is:', alice_p)
@@ -60,13 +68,15 @@ def menu():
 
         # Caluculate key n
         alice_n = calculateN(alice_p, alice_q)
-        print("\nn is:", str(alice_p), "*", str(alice_q), "=", alice_n)
+        print("n is:", str(alice_p), "*", str(alice_q), "=", alice_n)
 
         # Calculate phi(n)
         phiN = totient(alice_p, alice_q)
-        print("\nphi(n) is: (", str(alice_p), "-1) * (", str(alice_q), "-1) =", phiN)
+        print("phi(n) is: (", str(alice_p), "-1) * (", str(alice_q), "-1) =", phiN)
 
         # Generate key e
+        # by adding all coprime numbers to phi(n) to a list
+        # then randomly pick a number in that list
         coPrimeList = []
 
         for i in range(1, phiN):
@@ -77,62 +87,56 @@ def menu():
         print("\ne is: ", alice_e)
 
         # Verify d is coprime to phiN
-        if(gcd(alice_e,phiN) == 1):
+        if gcd(alice_e,phiN) == 1:
             print("Verified e is coprime!")
         else:
-            print("E is not coprime.")
+            print("ERROR: E is not coprime. Please try again.")
             sys.exit(1)
 
-        # Generate key d
+        # Generate key d using Extended Euclidean algorithm
         _, alice_d, _ = egcd(alice_e, phiN)
 
         # ensure key d is positive
         if alice_d < 0:
             alice_d = alice_d % phiN
 
-        print("d is: ", alice_d)
+        print("\nd is: ", alice_d)
 
         # verify d is coprime to phiN
-        if(gcd(alice_d,phiN) == 1):
+        if gcd(alice_d,phiN) == 1:
             print("Verified d is coprime!")
         else:
-            print("D is not coprime.")
+            print("ERROR: D is not coprime. Please try again.")
             sys.exit(1)
 
         # Alice's public and private keys
         alice_pubKey = alice_e, alice_n
-        print ("\nAlice public key (e,n) is: ", alice_pubKey)
+        print ("\nAlice public key is: ", alice_pubKey)
         alice_privKey = alice_d, alice_n
-        print ("Alice private key (d,n) is: ", alice_privKey)
+        print ("Alice private key is: ", alice_privKey)
 
         ciphertext = [ pow(ord(c), alice_e, alice_n) for c in inputMessage ]
         print("\nEncryption completed. Your ciphertext is: ", ciphertext)
 
-        send = str(input("\nPress S then Enter to send your ciphertext and public key to Bob..."))
+        send = str(input("\nPress S then Enter to send your ciphertext to Bob..."))
         if not send == 's':
             print("\nYou must send your ciphertext to Bob to continue.\n")
             sys.exit(1)
         else:
+
+            # START RSA DECRYPTION
+
             print("\n################ RSA Decryption - BOB #################")
 
             plaintext = [ chr(pow(c, alice_d, alice_n)) for c in ciphertext ]
-            print("\nBob's decrypted message is: ", plaintext)
+            print("\nDecryption completed. Original plaintext is: ", plaintext)
 
             #Verify decrypted message matches original plaintext
-            if (Counter(inputMessage) == Counter(plaintext)):
+            if Counter(inputMessage) == Counter(plaintext):
                 print("\nVerified decrypted message is correct. RSA completed.")
                 pass
             else:
                 print("\nERROR: Decrypted message is not correct. Please try again.")
                 sys.exit(1)
-
-
-    # Convert to binary
-    # bin_inputMessage = bin(int.from_bytes(str(inputMessage).encode(), 'big'))
-    # bin_ciphertext = bin(int.from_bytes(str(ciphertext).encode(), 'big'))
-    # bin_plaintext = bin(int.from_bytes(str(plaintext).encode(), 'big'))
-
-    # print("\n\n################ RSA Interception - CHARLIE ###############")
-    # print("\nOh no, Charlie has interceted your communication flow with Bob!")
 
 menu()
