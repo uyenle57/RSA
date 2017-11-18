@@ -2,8 +2,8 @@
 
 import textwrap
 from collections import Counter
-from encryption import *
-from decryption import *
+from RsaEncryption import *
+from RsaDecryption import *
 
 
 def menu():
@@ -24,7 +24,7 @@ def menu():
 
     if not inputMessage:
         print("ERROR: Please enter a message.")
-        sys.exit(1)
+        sys.exit(1)m
     # Validate input using regular expression
     # only alphanumeric characters are allowed
     elif not(regexStr.match(inputMessage)):
@@ -34,32 +34,32 @@ def menu():
 
         print("\n################ RSA Encryption - ALICE ###############")
 
-        encryption = Encryption()
+        rsaEncryption = RsaEncryption()
 
         # Randomly generate keys p and q between 0 and 100
-        key_p = encryption.generateRandKey()
-        key_q = encryption.generateRandKey()
+        key_p = rsaEncryption.generateRandKey()
+        key_q = rsaEncryption.generateRandKey()
         print('p is:', key_p)
         print('q is:', key_q)
 
         # Verify p an q are primes
-        if encryption.isPrime(key_p): print("Verified p is prime!")
+        if rsaEncryption.isPrime(key_p): print("Verified p is prime!")
         else:
             print("ERROR: p is not prime. Please try again.")
             sys.exit(1)
 
-        if encryption.isPrime(key_q): print("Verified q is prime!")
+        if rsaEncryption.isPrime(key_q): print("Verified q is prime!")
         else:
             print("ERROR: q is not prime. Please try again.")
             sys.exit(1)
 
 
         # Caluculate key n
-        key_n = encryption.calculateN(key_p, key_q)
+        key_n = rsaEncryption.calculateN(key_p, key_q)
         print("\nn is:", str(key_p), "*", str(key_q), "=", key_n)
 
         # Calculate phi(n)
-        phiN = encryption.totient(key_p, key_q)
+        phiN = rsaEncryption.totient(key_p, key_q)
         print("phi(n) is: (", str(key_p), "-1) * (", str(key_q), "-1) =", phiN)
 
         # Generate key e
@@ -68,7 +68,7 @@ def menu():
         coPrimeList = []
 
         for i in range(1, phiN):
-            if(encryption.isCoPrime([i, phiN])):
+            if(rsaEncryption.isCoPrime([i, phiN])):
                 coPrimeList.append(i)
 
         key_e = coPrimeList[random.randint(coPrimeList[0], len(coPrimeList)-1)]
@@ -83,7 +83,7 @@ def menu():
 
         # Generate key d using Extended Euclidean algorithm
         # key_d is a private variable
-        _, __key_d, _ = encryption.egcd(key_e, phiN)
+        _, __key_d, _ = rsaEncryption.egcd(key_e, phiN)
 
         # ensure key d is positive
         if __key_d < 0:
@@ -111,7 +111,7 @@ def menu():
         print("\nEncryption completed. Your ciphertext is: ", ciphertext)
 
         # TO DO:
-        # ciphertext = [ encryption.encrypt(ord(c), __key_d, key_n) for c in inputMessage ]
+        # ciphertext = [ rsaEncryption.encrypt(ord(c), __key_d, key_n) for c in inputMessage ]
 
         send = str(input("\nPress S then Enter to send your ciphertext to Bob: "))
         if not send == 's':

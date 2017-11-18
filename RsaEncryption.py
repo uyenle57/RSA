@@ -7,7 +7,7 @@ from math import gcd
 from itertools import combinations
 
 
-class Encryption():
+class RsaEncryption():
 
     def __init__(self):
         pass
@@ -16,9 +16,9 @@ class Encryption():
     # Check that generated number is a prime
     def isPrime(self, x):
         for i in range(2, x-1):
-            if x % i == 0:
+            if x % i == 0: #even
                 return False
-            else:
+            else: #odd = prime
                 return True
 
     # randomly generate a prime number between 0 and 100
@@ -62,7 +62,8 @@ class Encryption():
             return (gcd, x - (b // a) * y, y)
 
         # gcd is always 1 because a and b are relatively prime
-        # (x-(b//a)*y) is the private key (d)
+        # y is the modular multiplicative inverse of b % a
+        # x is the modular multiplicative inverse of a % b
         # // is the integer division operator
 
     # Modular Exponential algorithm for encryption and decryption
@@ -79,9 +80,6 @@ class Encryption():
         return y
 
     # Encryption
-    # p is plaintext
-    # e is public key
-    # c is ciphertext
-    def encrypt(self, p, e, n):
-        c = self.modExp(p, e, n) # c = p^e mod n
+    def encrypt(self, plaintext, privateKey, totient):
+        c = self.modExp(plaintext, privateKey, totient)
         return c
