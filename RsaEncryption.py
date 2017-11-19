@@ -71,13 +71,17 @@ class RsaEncryption():
     # n is exponent
     # m is modulus
     def modExp(self, x, n, m):
-        y = 1
+        # convert ints to floats to mitigate integer division problem (rounding errors)
+        y = 1.0
+        n = float(n)
+        m = float(m)
+
         while (n > 0):
             if (n % 2 == 1): #if odd
                 y = y * x % m
             n = n/2
             x = x * x % m
-        return y
+        return int(y)
 
     # Encryption
     def encrypt(self, plaintext, privateKey, totient):

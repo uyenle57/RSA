@@ -8,8 +8,6 @@ from RsaDecryption import *
 
 def menu():
 
-    regexStr = re.compile("^[a-zA-Z0-9,.].*$")
-
     print (textwrap.dedent("""
         ==========================================================================
         Computer Security Coursework
@@ -24,11 +22,6 @@ def menu():
 
     if not inputMessage:
         print("ERROR: Please enter a message.")
-        sys.exit(1)m
-    # Validate input using regular expression
-    # only alphanumeric characters are allowed
-    elif not(regexStr.match(inputMessage)):
-        print("\nSorry, only alphanumeric characters allowed. Please try again.")
         sys.exit(1)
     else:
 
@@ -83,37 +76,32 @@ def menu():
 
         # Generate key d using Extended Euclidean algorithm
         # key_d is a private variable
-        _, __key_d, _ = rsaEncryption.egcd(key_e, phiN)
+        _, key_d, _ = rsaEncryption.egcd(key_e, phiN)
 
         # ensure key d is positive
-        if __key_d < 0:
-            __key_d = __key_d % phiN
+        if key_d < 0:
+            key_d = key_d % phiN
 
-        print("\nd is: ", __key_d)
+        print("\nd is: ", key_d)
 
         # verify d is coprime to phiN
-        if gcd(__key_d,phiN) == 1:
+        if gcd(key_d,phiN) == 1:
             print("Verified d is coprime!")
         else:
             print("ERROR: D is not coprime. Please try again.")
             sys.exit(1)
 
         # Public and private keys
-        publicKey = key_e, key_n
-        print ("\nPublic key is: ", publicKey)
-        __privateKey = __key_d, key_n
-        print ("Private key is: ", __privateKey)
+        print ("\nPublic key is: ", key_e, key_n)
+        print ("Private key is: ", key_d, key_n)
         print("\n(!) You can now publish your public key, however your private key must be kept private!")
 
 
         print("\n=> Starting encryption using Private key...")
-        ciphertext = [ pow(ord(c), __key_d, key_n) for c in inputMessage ]
+        ciphertext = [ rsaEncryption.encrypt(ord(c), key_d, key_n) for c in inputMessage ]
         print("\nEncryption completed. Your ciphertext is: ", ciphertext)
 
-        # TO DO:
-        # ciphertext = [ rsaEncryption.encrypt(ord(c), __key_d, key_n) for c in inputMessage ]
-
-        send = str(input("\nPress S then Enter to send your ciphertext to Bob: "))
+        send = str(input("\nPress 's' then Enter to send your ciphertext to Bob: "))
         if not send == 's':
             print("\nYou must send your ciphertext to Bob to continue.\n")
             sys.exit(1)
@@ -121,14 +109,12 @@ def menu():
 
             print("\n################ RSA Decryption - BOB #################")
 
-            decryption = Decryption()
+            rsaDecryption = RsaDecryption()
 
             print("\n=> Starting decryption using Public key...")
-            plaintext = [ chr(pow(c, key_e, key_n)) for c in ciphertext ]
+            plaintext = [ chr(rsaDecryption.decrypt(c, key_e, key_n)) for c in ciphertext ]
             print("\nDecryption completed. Original plaintext is: ", plaintext)
 
-            # TO DO
-            # plaintext = [ chr(decryption.decrypt(c, key_e, key_n)) for c in ciphertext ]
 
             #Verify decrypted message matches original plaintext
             if Counter(inputMessage) == Counter(plaintext):
