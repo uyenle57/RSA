@@ -1,6 +1,7 @@
 # RSA Cryptosystem
 Implementation of RSA cryptography system in Python.
 
+<br>
 
 ### Prerequisites:
 • [Python >= 3.6.3](https://www.python.org/downloads/) 
@@ -25,9 +26,9 @@ In your Terminal:
 cd /path/to/tle004_coursework/rsa/  
 python3 menu.py
 ```
+<br>
 
 ---
-
 Computer Security Coursework: Part 1 - RSA  
 1 December 2017  
 Goldsmiths, University of London
