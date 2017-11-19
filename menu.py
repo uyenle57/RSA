@@ -75,7 +75,6 @@ def menu():
             sys.exit(1)
 
         # Generate key d using Extended Euclidean algorithm
-        # key_d is a private variable
         _, key_d, _ = rsaEncryption.egcd(key_e, phiN)
 
         # ensure key d is positive
@@ -98,6 +97,8 @@ def menu():
 
 
         print("\n=> Starting encryption using Private key...")
+
+        # ord(): Converts a string character to its ordinal Unicode character representation.
         ciphertext = [ rsaEncryption.encrypt(ord(c), key_d, key_n) for c in inputMessage ]
         print("\nEncryption completed. Your ciphertext is: ", ciphertext)
 
@@ -112,6 +113,8 @@ def menu():
             rsaDecryption = RsaDecryption()
 
             print("\n=> Starting decryption using Public key...")
+
+            # chr(): Converts an ordinal Unicode number of a character to its character representation
             plaintext = [ chr(rsaDecryption.decrypt(c, key_e, key_n)) for c in ciphertext ]
             print("\nDecryption completed. Original plaintext is: ", plaintext)
 
