@@ -16,7 +16,7 @@ class RsaEncryption():
         """ Returns True if x is a prime number, else False """
 
         # 1 is not a prime number (requires two distinct natural numbers)
-        if x == 1:
+        if x == 1 | x == 0 :
             return False
 
         for i in range(2, x-1):
@@ -25,7 +25,7 @@ class RsaEncryption():
         return True
 
     def generateRandPrime(self):
-        """ Returns a randomly generated number between 0 and 100 """
+        """ Returns a randomly generated number between 2 and 100 """
         while True:
             self.num = secrets.randbelow(100)
             if(self.isPrime(self.num)):
