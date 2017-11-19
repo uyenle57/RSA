@@ -15,7 +15,7 @@ class RsaEncryption():
     def isPrime(self, x):
         """ Returns True if x is a prime number, else False """
 
-        # 1 is not a prime number (requires two distinct natural numbers)
+        # 0 and 1 is not a prime number (requires two distinct natural numbers)
         if x == 1 | x == 0 :
             return False
 

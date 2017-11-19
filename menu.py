@@ -128,8 +128,8 @@ def menu():
             print("\nDecryption completed. Original plaintext is: ", plaintext)
 
 
-            #Verify decrypted message matches original plaintext
-            if Counter(inputMessage) == Counter(plaintext):
+            # Verify decrypted message matches original plaintext
+            if Counter(plaintext) == Counter(inputMessage):
                 print("\nVerified decrypted message is correct. RSA completed.")
                 sys.exit(1)
             else:
