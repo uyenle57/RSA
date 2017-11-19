@@ -16,7 +16,7 @@ class RsaEncryption():
         """ Returns True if x is a prime number, else False """
 
         # 0 and 1 is not a prime number (requires two distinct natural numbers)
-        if x == 1 | x == 0 :
+        if x <= 1 :
             return False
 
         for i in range(2, x-1):
