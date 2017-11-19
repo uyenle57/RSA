@@ -15,12 +15,16 @@ class RsaEncryption():
     def isPrime(self, x):
         """ Returns True if x is a prime number, else False """
 
+        # 1 is not a prime number (requires two distinct natural numbers)
+        if x == 1:
+            return False
+
         for i in range(2, x-1):
             if x % i == 0: #even
                 return False
         return True
 
-    def generateRandKey(self):
+    def generateRandPrime(self):
         """ Returns a randomly generated number between 0 and 100 """
         while True:
             self.num = secrets.randbelow(100)
@@ -66,21 +70,9 @@ class RsaEncryption():
 
     def modular_exponentiation(self, x, n, m):
         """ Returns x to the power of n modular m """
-
-        # convert ints to floats to mitigate integer division problem (rounding errors)
-        y = 1.0
-        n = float(n)
-        m = float(m)
-
-        while (n > 0):
-            if (n % 2 == 1): #if odd
-                y = y * x % m
-            n = n/2
-            x = x * x % m
-        return int(y)
+        return pow(x,n,m)
 
     def encrypt(self, plaintext, privateKey, totient):
         """ Return ciphertext by computing plaintext to the power of privateKey modular totient """
-
         c = self.modular_exponentiation(plaintext, privateKey, totient)
         return c

@@ -30,8 +30,13 @@ def menu():
         rsaEncryption = RsaEncryption()
 
         # Randomly generate keys p and q between 0 and 100
-        key_p = rsaEncryption.generateRandKey()
-        key_q = rsaEncryption.generateRandKey()
+        key_p = rsaEncryption.generateRandPrime()
+        key_q = rsaEncryption.generateRandPrime()
+
+        # ensure primes are distinct
+        while key_q == key_p:
+            key_q = rsaEncryption.generateRandPrime()
+
         print('p is:', key_p)
         print('q is:', key_q)
 
@@ -47,7 +52,7 @@ def menu():
             sys.exit(1)
 
 
-        # Caluculate key n
+        # Calculate key n
         key_n = rsaEncryption.calculateN(key_p, key_q)
         print("\nn is:", str(key_p), "*", str(key_q), "=", key_n)
 
