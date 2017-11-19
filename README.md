@@ -6,7 +6,7 @@ Implementation of RSA cryptography system in Python.
 • [Python >= 3.6.3](https://www.python.org/downloads/) 
 
 ### Running the program:
-Please make sure you have downloaded Python 3.6.3 usin the download link above before running the program.
+Please make sure you have installed Python 3.6.3 using the link above before running the program.
 
 Verify you have Python 3.6.3:
 ```
