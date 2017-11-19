@@ -16,8 +16,7 @@ def menu():
         ==========================================================================
     """))
 
-    print("Hello Alice! \nSuppose you want to send a private message to Bob. What would you like to say?")
-    print("\n(Only alphanumeric characters are allowed)\n")
+    print("Hello Alice! \nSuppose you want to send a private message to Bob. What would you like to say?\n")
     inputMessage = str(input("Your message: "))
 
     if not inputMessage:
@@ -41,12 +40,14 @@ def menu():
         print('q is:', key_q)
 
         # Verify p an q are primes
-        if rsaEncryption.isPrime(key_p): print("Verified p is prime!")
+        if rsaEncryption.isPrime(key_p):
+            print("Verified p is prime!")
         else:
             print("ERROR: p is not prime. Please try again.")
             sys.exit(1)
 
-        if rsaEncryption.isPrime(key_q): print("Verified q is prime!")
+        if rsaEncryption.isPrime(key_q):
+            print("Verified q is prime!")
         else:
             print("ERROR: q is not prime. Please try again.")
             sys.exit(1)
@@ -61,8 +62,7 @@ def menu():
         print("phi(n) is: (", str(key_p), "-1) * (", str(key_q), "-1) =", phiN)
 
         # Generate key e
-        # by adding all coprime numbers to phi(n) to a list
-        # then randomly pick a number in that list
+        # by adding all coprime numbers to phi(n) to a list, then randomly pick a number in that list
         coPrimeList = []
 
         for i in range(1, phiN):
@@ -82,6 +82,10 @@ def menu():
         # Generate key d using Extended Euclidean algorithm
         _, key_d, _ = rsaEncryption.egcd(key_e, phiN)
 
+        # ensure key e and d are distinct
+        while key_e == key_d:
+            _, key_d, _ = rsaEncryption.egcd(key_e, phiN)
+
         # ensure key d is positive
         if key_d < 0:
             key_d = key_d % phiN
@@ -95,9 +99,9 @@ def menu():
             print("ERROR: D is not coprime. Please try again.")
             sys.exit(1)
 
-        # Public and private keys
-        print ("\nPublic key is: ", key_e, key_n)
-        print ("Private key is: ", key_d, key_n)
+        # Public and private key
+        print ("\nPublic key is: ", (key_e, key_n))
+        print ("Private key is: ", (key_d, key_n))
         print("\n(!) You can now publish your public key, however your private key must be kept private!")
 
 
