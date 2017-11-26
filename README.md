@@ -25,7 +25,7 @@ Otherwise, you can also use a Python IDE of choice.
 #### Mac
 In your Terminal:  
 ```
-cd /path/to/tle004_coursework/rsa/  
+cd /path/to/tle004_coursework/Part1_RSA 
 python3 menu.py
 ```
 <br>

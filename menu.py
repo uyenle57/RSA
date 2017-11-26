@@ -65,11 +65,11 @@ def menu():
         # by adding all coprime numbers to phi(n) to a list, then randomly pick a number in that list
         coPrimeList = []
 
-        for i in range(1, phiN):
+        for i in range(2, phiN):
             if(rsaEncryption.isCoPrime([i, phiN])):
                 coPrimeList.append(i)
 
-        key_e = coPrimeList[random.randint(coPrimeList[0], len(coPrimeList)-1)]
+        key_e = coPrimeList[random.randint(0, len(coPrimeList)-1)]
         print("\ne is: ", key_e)
 
         # Verify e is coprime to phiN
@@ -84,6 +84,7 @@ def menu():
 
         # ensure key e and d are distinct
         while key_e == key_d:
+            key_e = coPrimeList[random.randint(0, len(coPrimeList)-1)]
             _, key_d, _ = rsaEncryption.egcd(key_e, phiN)
 
         # ensure key d is positive

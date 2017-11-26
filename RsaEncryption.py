@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-#
 
 import sys, re
-import random, secrets
+import random
 from array import *
 from math import gcd
 from itertools import combinations
@@ -25,9 +25,9 @@ class RsaEncryption():
         return True
 
     def generateRandPrime(self):
-        """ Returns a randomly generated number between 2 and 100 """
+        """ Returns a randomly generated number between 2 and 200 """
         while True:
-            self.num = secrets.randbelow(100)
+            self.num = random.randint(2, 200)
             if(self.isPrime(self.num)):
                 return self.num
 
@@ -70,6 +70,19 @@ class RsaEncryption():
 
     def modular_exponentiation(self, x, n, m):
         """ Returns x to the power of n modular m """
+
+        # convert ints to floats to mitigate integer division problem (rounding errors)
+        # y = 1.0
+        # n = float(n)
+        # m = float(m)
+        #
+        # while (n > 0):
+        #     if(n % 2 == 1):
+        #         y = y * x % m
+        #     n = n/2
+        #     x = x * x % m
+        # return int(y)
+
         return pow(x,n,m)
 
     def encrypt(self, plaintext, privateKey, totient):
