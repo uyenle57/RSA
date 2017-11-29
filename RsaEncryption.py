@@ -71,6 +71,7 @@ class RsaEncryption():
     def modular_exponentiation(self, x, n, m):
         """ Returns x to the power of n modular m """
 
+        # not working - using pow() instead
         # convert ints to floats to mitigate integer division problem (rounding errors)
         # y = 1.0
         # n = float(n)
