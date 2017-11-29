@@ -29,24 +29,24 @@ def menu():
         rsaEncryption = RsaEncryption()
 
         # Randomly generate keys p and q between 0 and 100
-        key_p = rsaEncryption.generateRandPrime()
-        key_q = rsaEncryption.generateRandPrime()
+        key_p = rsaEncryption.generate_randprime()
+        key_q = rsaEncryption.generate_randprime()
 
         # ensure primes are distinct
         while key_q == key_p:
-            key_q = rsaEncryption.generateRandPrime()
+            key_q = rsaEncryption.generate_randprime()
 
         print('p is:', key_p)
         print('q is:', key_q)
 
         # Verify p an q are primes
-        if rsaEncryption.isPrime(key_p):
+        if rsaEncryption.is_prime(key_p):
             print("Verified p is prime!")
         else:
             print("ERROR: p is not prime. Please try again.")
             sys.exit(1)
 
-        if rsaEncryption.isPrime(key_q):
+        if rsaEncryption.is_prime(key_q):
             print("Verified q is prime!")
         else:
             print("ERROR: q is not prime. Please try again.")
@@ -54,7 +54,7 @@ def menu():
 
 
         # Calculate key n
-        key_n = rsaEncryption.calculateN(key_p, key_q)
+        key_n = rsaEncryption.calculate_n(key_p, key_q)
         print("\nn is:", str(key_p), "*", str(key_q), "=", key_n)
 
         # Calculate phi(n)
@@ -66,7 +66,7 @@ def menu():
         coPrimeList = []
 
         for i in range(2, phiN):
-            if(rsaEncryption.isCoPrime([i, phiN])):
+            if(rsaEncryption.is_coprime([i, phiN])):
                 coPrimeList.append(i)
 
         key_e = coPrimeList[random.randint(0, len(coPrimeList)-1)]

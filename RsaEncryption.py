@@ -12,7 +12,7 @@ class RsaEncryption():
     def __init__(self):
         pass
 
-    def isPrime(self, x):
+    def is_prime(self, x):
         """ Returns True if x is a prime number, else False """
 
         # 0 and 1 is not a prime number (requires two distinct natural numbers)
@@ -24,14 +24,14 @@ class RsaEncryption():
                 return False
         return True
 
-    def generateRandPrime(self):
+    def generate_randprime(self):
         """ Returns a randomly generated number between 2 and 200 """
         while True:
             self.num = random.randint(2, 200)
-            if(self.isPrime(self.num)):
+            if(self.is_prime(self.num)):
                 return self.num
 
-    def calculateN(self, p, q):
+    def calculate_n(self, p, q):
         """ Returns key e by multiplying two primes p with q """
         return p * q
 
@@ -47,7 +47,7 @@ class RsaEncryption():
         else:
             return a
 
-    def isCoPrime(self, list):
+    def is_coprime(self, list):
         """ Returns True if a number is coprime to phi(n), else False """
         for num, totient in combinations(list, 2):
             if(self.euclid(num, totient) == 1):
